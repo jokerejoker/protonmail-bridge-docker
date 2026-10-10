@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y wget binutils
 # Repack deb (removes unnecessary dependencies and produces /protonmail.deb)
 RUN bash /install.sh
 
+# ----
 FROM debian:sid-slim
 LABEL maintainer="Simon Felding <sife@adm.ku.dk>"
 
@@ -22,7 +23,14 @@ COPY gpgparams entrypoint.sh PACKAGE /protonmail/
 COPY --from=build /protonmail.deb /tmp/protonmail.deb
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends /tmp/protonmail.deb socat pass libsecret-1-0 ca-certificates procps \
+    && apt-get install -y --no-install-recommends \
+        /tmp/protonmail.deb \
+        socat \
+        pass \
+        libsecret-1-0 \
+        ca-certificates \
+        procps \
+        libfido2-dev \
     && rm -rf /var/lib/apt/lists/*
 
-CMD ["bash", "/protonmail/entrypoint.sh"]
+ENTRYPOINT [ "/protonmail/entrypoint.sh" ]

@@ -3,7 +3,7 @@
 set -ex
 
 # Initialize
-if [[ $1 == init ]]; then
+if [[ "$1" == "init" ]]; then
 
     # # Parse parameters
     # TFP=""  # Default empty two factor passcode
